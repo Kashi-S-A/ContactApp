@@ -28,4 +28,18 @@ public class UserServiceImpl implements UserService{
 			return userRepo.save(user)!=null;//return true if registered succ else false
 		}
 	}
+
+	/*
+	 * used to check whether user is registered or not
+	 * @param : it takes String email
+	*/
+	@Override
+	public Optional<User> findByEmail(String email) {
+		return userRepo.findByEmail(email);
+	}
+
+	@Override
+	public User findById(Integer uid) {
+		return userRepo.findById(uid).get();
+	}
 }

@@ -13,18 +13,17 @@
 <body>
 
 	<div class="container">
-		<h2>Register here,</h2>
+		<h2>Add Contact</h2>
 
-		<form action="register" method="post">
+		<form action="add" method="post">
 			<div class="mb-3">
 				<label for="exampleFormControlInput1" class="form-label">Name</label> <input type="text" class="form-control"
 					id="exampleFormControlInput1" name="name" placeholder="ex : Dinga" required>
 			</div>
 			
 			<div class="mb-3">
-				<label for="exampleFormControlInput2" class="form-label">Email
-					address</label> <input type="email" class="form-control"
-					id="exampleFormControlInput2" name="email" placeholder="ex : dinga@example.com" required>
+				<label for="exampleFormControlInput2" class="form-label">Adhar Number</label> <input type="number" class="form-control"
+					id="exampleFormControlInput2" name="adharNo" placeholder="ex : *********4567" required>
 			</div>
 			
 			<div class="mb-3">
@@ -32,14 +31,9 @@
 					id="exampleFormControlInput3" name="phone" placeholder="ex : 99******72" required>
 			</div>
 			
-			<div class="mb-3">
-				<label for="exampleFormControlInput4" class="form-label">Password</label> <input type="password" class="form-control"
-					id="exampleFormControlInput4" name="password" placeholder="ex : Dinga@123" required>
-			</div>
+			<button type="submit" class="btn btn-primary">Add</button><br>
 			
-			<button type="submit" class="btn btn-primary">Register</button><br>
-			
-			<a href="login">Login Here</a>
+			<a href="logout">Logout</a>
 
 		</form>
 
