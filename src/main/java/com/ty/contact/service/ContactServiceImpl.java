@@ -16,4 +16,16 @@ public class ContactServiceImpl implements ContactService{
 	public void saveContact(Contact contact) {
 		contactRepo.save(contact);
 	}
+
+	@Override
+	public Contact findById(Integer cid) {
+		return contactRepo.findById(cid).get();
+	}
+
+	@Override
+	public void deleteById(Integer cid) {
+		contactRepo.deleteById(cid);
+	}
+	
+	
 }

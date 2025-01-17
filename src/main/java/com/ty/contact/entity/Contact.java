@@ -13,11 +13,14 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Table(name = "contact_info")
-@Data
+//@Data
+@Setter
+@Getter
 public class Contact {
 
 	@Id
@@ -40,5 +43,11 @@ public class Contact {
 	
 	@UpdateTimestamp
 	private LocalDateTime updatedDate;
+
+	@Override
+	public String toString() {
+		return "Contact [cid=" + cid + ", name=" + name + ", phone=" + phone + ", adharNo=" + adharNo + ", createdDate="
+				+ createdDate + ", updatedDate=" + updatedDate + "]";
+	}
 	
 }

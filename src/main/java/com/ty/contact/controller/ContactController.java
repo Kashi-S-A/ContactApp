@@ -4,6 +4,11 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.ty.contact.entity.Contact;
 import com.ty.contact.entity.User;
@@ -12,12 +17,6 @@ import com.ty.contact.service.UserService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
-
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
 @Controller
 public class ContactController {
@@ -63,12 +62,10 @@ public class ContactController {
 
 		Optional<User> opt = userService.findByEmail(email);
 
-		User user = opt.get();
-
 		ModelAndView mv = new ModelAndView();
 
-		if (opt.isPresent() && password.equals(user.getPassword())) {
-
+		if (opt.isPresent() && password.equals(opt.get().getPassword())) {
+			User user = opt.get();
 			HttpSession session = request.getSession(true);
 			session.setAttribute("uid", user.getUid());
 
@@ -96,29 +93,78 @@ public class ContactController {
 		HttpSession session = request.getSession(false);
 
 		Integer uid = (Integer) session.getAttribute("uid");
-		
-		User user=userService.findById(uid);
-		
+
+		User user = userService.findById(uid);
+
 		contact.setUser(user);
-		
+
 		contactService.saveContact(contact);
 
-		ModelAndView mv=new ModelAndView();
+		ModelAndView mv = new ModelAndView();
 		mv.setViewName("home.jsp");
 		mv.addObject("contacts", user.getContacts());
-		
+
 		return mv;
 	}
-	
+
 	@GetMapping("/logout")
 	public String logout(HttpServletRequest request) {
-		
-		HttpSession session = request.getSession(false);
-		
+
+		HttpSession session = request.getSession(true);
+
 		session.invalidate();
-		
+
 		return "login.jsp";
 	}
-	
+
+	@GetMapping("/update")
+	public ModelAndView updatePage(@RequestParam Integer cid) {
+
+		Contact contact = contactService.findById(cid);
+
+		ModelAndView mv = new ModelAndView("update.jsp");
+		mv.addObject("cont", contact);
+
+		return mv;
+	}
+
+	@PostMapping("/update")
+	public ModelAndView updateContact(Contact contact, HttpServletRequest request) {
+
+		Contact dbContact = contactService.findById(contact.getCid());
+		dbContact.setName(contact.getName());
+		dbContact.setAdharNo(contact.getAdharNo());
+		dbContact.setPhone(contact.getPhone());
+
+		contactService.saveContact(dbContact);
+
+		ModelAndView mv = new ModelAndView("home.jsp");
+		mv.addObject("contacts", dbContact.getUser().getContacts());
+
+		return mv;
+	}
+
+	@GetMapping("/delete")
+	public ModelAndView getMethodName(@RequestParam Integer cid, HttpServletRequest request) {
+
+		contactService.deleteById(cid);
+
+		HttpSession session = request.getSession(false);
+
+		Integer uid = (Integer) session.getAttribute("uid");
+
+		User user = userService.findById(uid);
+
+		ModelAndView mv = new ModelAndView("home.jsp");
+		mv.addObject("contacts", user.getContacts());
+
+		return mv;
+	}
+
+	@ExceptionHandler(Exception.class)
+	public ModelAndView catchException() {
+		ModelAndView mv = new ModelAndView("error.jsp");
+		return mv;
+	}
 
 }

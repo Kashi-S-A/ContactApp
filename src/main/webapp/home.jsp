@@ -53,8 +53,8 @@
 					<th scope="row"><%=contact.getCid()%></th>
 					<td><%=contact.getName()%></td>
 					<td><%=contact.getPhone()%></td>
-					<td><a href="#">Update</a></td>
-					<td><a href="#">Delete</a></td>
+					<td><a href="update?cid=<%=contact.getCid()%>">Update</a></td>
+					<td><a href="delete?cid=<%=contact.getCid()%>">Delete</a></td>
 				</tr>
 				<%
 				}
